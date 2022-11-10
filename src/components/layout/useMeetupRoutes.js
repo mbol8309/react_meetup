@@ -5,7 +5,10 @@ import NewMeetupsPage from "../../pages/NewMeetup";
 import { useFavorites } from "../meetups/FavoritesProvider";
 
 import classes from "./MainNavigation.module.css"
-
+/**
+ * Custom hook to get all website routes.
+ * @returns Array of routes. Each route has path, element and label.
+ */
 const useMeetupRoutes = () => {
 
     const { favoritesList } = useFavorites()

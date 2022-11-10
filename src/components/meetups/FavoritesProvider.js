@@ -3,7 +3,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 const FavoriteContext = React.createContext({})
 
 export const useFavorites = () => React.useContext(FavoriteContext)
-
+/**
+ * Provider for handling favorites listing, add and remove
+ */
 const FavoritesProvider = ({ children }) => {
 
     const [favoritesList, setFavoritesList] = useState([])

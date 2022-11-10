@@ -13,9 +13,6 @@ export default function MeetupItem({ item }) {
 
   const inFavorites = useMemo(() => favoritesList?.find(f => f.id === item.id), [item, favoritesList])
 
-  // if (!data) return <p>Loading...</p>;
-  // let [item] = data;
-
   return (
     <li className={classes.item} data-test='meet-up-item'>
       <Card>

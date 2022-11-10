@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react"
 
+/**
+ * Custom hook to use to detect page scroll
+ * @param {Number} threshold. Diference to calculate new scroll
+ * @returns 0 on initialization, 1 when scroll up, -1 when scroll down
+ */
 const useScroll = (threshold = 100) => {
 
     const [scrollDirection, setScrollDirection] = useState(0)

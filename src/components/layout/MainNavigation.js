@@ -11,10 +11,8 @@ export default function MainNavigation() {
 
   const scrollDirection = useScroll()
   
-
   const routes = useMeetupRoutes()
 
-  //scrollDirection == 0 or 1, hides = true, else hide = false
   const hide = useMemo(() => scrollDirection > 0 ? true : false, [scrollDirection])
 
   return (
