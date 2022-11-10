@@ -39,32 +39,94 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Solucion implementada
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Enrutamiento en cliente por URL
+Para que cada componente tenga una dirección que se refleje en al URL, se utilizó el paquete [react router dom](https://github.com/remix-run/react-router/tree/main/packages/react-router-dom). Las rutas se modificaron para en vez de estar fijas en el código en varias partes, se creo un hook `useMeetupRoutes` que tiene el listado de rutas, el componente y un label, pudiéndose agregar rutas directamente en este componente sin necesidad de cambio de implementación en otros componentes.
+Rutas: 
+* `/` se muestra el componente `<AllMeetups/>`
+* `/new` se muestra el componente `<NewMeetupsPage/>`
+* `/favorites` se muestra el componente `<FavoritesPage/>`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Animacion del header
+Para lograr un header fijo en el borde superior de la pagina se le agrego al header las propiedades `CSS`
+```css
+position: fixed;
+top: 0;
+transition: ease-in-out 0.5s;
+```
+y una clase nueva que mueve el header hacia arriba en caso de aplicarse:
+```css
+.header_hide {
+  top: -5.1rem;
+}
+```
+Se creo un placeholder para el header porque al poner el header `fixed` el contenido sube.
+```css
+.header_placeholder {
+  height: 5rem;
+  width: 100%;
+}
+```
+Con esto se creo el hook personalizado `useScroll` para detectar `scroll` en la pantalla y si se mueve hacia arriba devuelve `1` y de lo contrario `-1`. Con el valor de este hook y el paquete [classnames](https://github.com/JedWatson/classnames) se aplica la clase `header_hide` al header cuando el scroll se mueve hacia arriba:
+```jsx javascript
+  const scrollDirection = useScroll()
 
-### Code Splitting
+  //scrollDirection == 0 or 1, hides = true, else hide = false
+  const hide = useMemo(() => scrollDirection > 0 ? true : false, [scrollDirection])
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+return (
+<header className={classNames(classes.header,classes.header_placeholder, 
+{ [classes.header_hide]: hide })} data-test="navigation-header">
+...
+</header>
+)
+```
 
-### Analyzing the Bundle Size
+### Implementacion de agregar a favoritos
+Para implementar la funcionalidad de favoritos que fuera accesible globalmente se utilizo [React Context](https://reactjs.org/docs/context.html).
+Se creo el componente `FavoritesProvider` para que sus componentes hijos puedan utilizar los valores que se le pasan al contexto. Los valores que se le pasan es el *listado de favoritos*, *agregar a favoritos*, *eliminar de favoritos*:
+```jsx 
+const [favoritesList, setFavoritesList] = useState([])
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    const addToFavorite = useCallback((item) => {
+        ...
+    }, [])
 
-### Making a Progressive Web App
+    const removeFromFavorite = useCallback((item) => {
+        ...
+    }, [])
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    const contextValue = useMemo(() => ({
+        favoritesList,
+        addToFavorite,
+        removeFromFavorite
+    }), [addToFavorite, removeFromFavorite, favoritesList])
 
-### Advanced Configuration
+    return (
+        <FavoriteContext.Provider value={contextValue}>
+            {children}
+        </FavoriteContext.Provider>
+    )
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Y se creo el hook `useFavorites` para acceder a los valores del contexto en las clases hijas.
+Ejemplo (Pagina `Favorites`):
+```jsx
+const { favoritesList } = useFavorites()
 
-### Deployment
+  return (
+    <section>
+      <h1>Favorites Page</h1>
+      <ul className={classes.list}>
+          {
+            favoritesList.map(item =>
+              <MeetupItem key={item.id} item={item} />
+            )
+          }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+        </ul>
+    </section>
+  );
+```
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

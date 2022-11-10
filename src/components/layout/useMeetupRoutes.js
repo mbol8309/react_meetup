@@ -25,7 +25,8 @@ const useMeetupRoutes = () => {
             {
                 path: "/favorites",
                 element: <FavoritesPage />,
-                label: <>
+                label: 
+                <>
                     My Favorites
                     <span className={classes.badge}>{favoritesList?.length}</span>
                 </>

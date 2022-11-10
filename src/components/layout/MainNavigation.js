@@ -4,9 +4,8 @@ import { ALL_MEETUP_PAGE, FAVORITES_PAGE, NEW_MEETUP_PAGE } from "./../../utils/
 
 import classes from "./MainNavigation.module.css";
 import classNames from "classnames";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useScroll from "../../util-hooks/useScroll";
-import { useFavorites } from "../meetups/FavoritesProvider";
 
 export default function MainNavigation() {
 
@@ -20,7 +19,7 @@ export default function MainNavigation() {
 
   return (
     <>
-      <header className={classNames(classes.header, { [classes.header_hide]: hide })} data-test="navigation-header">
+      <header className={classNames(classes.header,classes.header_placeholder, { [classes.header_hide]: hide })} data-test="navigation-header">
         <div className={classes.logo}>React Meetups</div>
         <nav>
           <ul>

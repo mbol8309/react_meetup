@@ -10,7 +10,6 @@ export default function AllMeetupsPage() {
   });
 
   const loading = useMemo(() => !data ? true : false,[data])
-  if (!data) return <p>Loading...</p>;
 
   return (
     <section>
