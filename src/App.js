@@ -12,24 +12,6 @@ import FavoritesProvider from "./components/meetups/FavoritesProvider";
 import useMeetupRoutes from "./components/layout/useMeetupRoutes";
 
 function App() {
-  const [page, setPage] = useState(ALL_MEETUP_PAGE);
-
-  function getCurrentPageComponent() {
-    let currentPageComponent = <AllMeetupsPage />;
-    switch (page) {
-      case FAVORITES_PAGE:
-        currentPageComponent = <FavoritesPage />;
-        break;
-      case NEW_MEETUP_PAGE:
-        currentPageComponent = <NewMeetupsPage />;
-        break;
-      default:
-        currentPageComponent = <AllMeetupsPage />;
-    }
-
-    return currentPageComponent;
-  }
-
   const routes = useMeetupRoutes()
 
   return (

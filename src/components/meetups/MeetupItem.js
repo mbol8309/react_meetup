@@ -11,7 +11,7 @@ export default function MeetupItem({ item }) {
   const { addToFavorite, removeFromFavorite } = useFavorites()
   const { favoritesList } = useFavorites()
 
-  const inFavorites = useMemo(() => favoritesList.find(f => f.id === item.id), [item, favoritesList])
+  const inFavorites = useMemo(() => favoritesList?.find(f => f.id === item.id), [item, favoritesList])
 
   // if (!data) return <p>Loading...</p>;
   // let [item] = data;
@@ -20,12 +20,12 @@ export default function MeetupItem({ item }) {
     <li className={classes.item} data-test='meet-up-item'>
       <Card>
         <div className={classes.image}>
-          <img src={item.image} alt={item.title} />
+          <img src={item?.image} alt={item?.title} />
         </div>
         <div className={classes.content}>
-          <h3>{item.title}</h3>
-          <address>{item.address}</address>
-          <p>{item.description}</p>
+          <h3>{item?.title}</h3>
+          <address>{item?.address}</address>
+          <p>{item?.description}</p>
         </div>
         <div className={classes.actions}>
           {
