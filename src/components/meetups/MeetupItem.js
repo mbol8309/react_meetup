@@ -2,16 +2,20 @@ import { useFetch } from "./../../util-hooks/useFetch";
 import classes from "./MeetupItem.module.css";
 import Card from "../ui/Card";
 import { useFavorites } from "./FavoritesProvider";
+import { useMemo } from "react";
 
-export default function MeetupItem() {
-  const { data } = useFetch({
-    url: "/data.json",
-  });
+export default function MeetupItem({ item }) {
+  // const { data } = useFetch({
+  //   url: "/data.json",
+  // });
 
-  const { addToFavorite } = useFavorites()
+  const { addToFavorite, removeFromFavorite } = useFavorites()
+  const { favoritesList } = useFavorites()
 
-  if (!data) return <p>Loading...</p>;
-  let [item] = data;
+  const inFavorites = useMemo(() => favoritesList.find(f => f.id === item.id), [item, favoritesList])
+
+  // if (!data) return <p>Loading...</p>;
+  // let [item] = data;
 
   return (
     <li className={classes.item} data-test='meet-up-item'>
@@ -25,7 +29,12 @@ export default function MeetupItem() {
           <p>{item.description}</p>
         </div>
         <div className={classes.actions}>
-          <button onClick={()=>addToFavorite(item.id)}>Add to favorites</button>
+          {
+            inFavorites ?
+              <button onClick={() => removeFromFavorite(item)}>Remove from favorites</button>
+              :
+              <button onClick={() => addToFavorite(item)}>Add to favorites</button>
+          }
         </div>
       </Card>
     </li>
