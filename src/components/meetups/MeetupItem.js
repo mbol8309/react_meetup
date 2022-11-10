@@ -1,11 +1,14 @@
 import { useFetch } from "./../../util-hooks/useFetch";
 import classes from "./MeetupItem.module.css";
 import Card from "../ui/Card";
+import { useFavorites } from "./FavoritesProvider";
 
 export default function MeetupItem() {
   const { data } = useFetch({
     url: "/data.json",
   });
+
+  const { addToFavorite } = useFavorites()
 
   if (!data) return <p>Loading...</p>;
   let [item] = data;
@@ -22,7 +25,7 @@ export default function MeetupItem() {
           <p>{item.description}</p>
         </div>
         <div className={classes.actions}>
-          <button>Add to favorites</button>
+          <button onClick={()=>addToFavorite(item.id)}>Add to favorites</button>
         </div>
       </Card>
     </li>

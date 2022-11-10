@@ -8,7 +8,8 @@ import { ALL_MEETUP_PAGE, FAVORITES_PAGE, NEW_MEETUP_PAGE } from "./utils/consta
 import MainNavigation from "./components/layout/MainNavigation";
 import Layout from "./components/layout/Layout";
 import { BrowserRouter, createBrowserRouter, Route, Routes } from "react-router-dom";
-import { routes } from "./components/layout/routes";
+import FavoritesProvider from "./components/meetups/FavoritesProvider";
+import useMeetupRoutes from "./components/layout/useMeetupRoutes";
 
 function App() {
   const [page, setPage] = useState(ALL_MEETUP_PAGE);
@@ -29,22 +30,24 @@ function App() {
     return currentPageComponent;
   }
 
-  const router = createBrowserRouter(routes);
+  const routes = useMeetupRoutes()
 
   return (
     <div data-test="app">
       <BrowserRouter>
-        <MainNavigation />
-        <Layout>
+        <FavoritesProvider>
+          <MainNavigation />
+          <Layout>
 
-          <Routes>
-            {routes.map(r => (
-              <Route key={r.path} path={r.path} element={r.element} />
-            ))
-            }
-          </Routes>
+            <Routes>
+              {routes.map(r => (
+                <Route key={r.path} path={r.path} element={r.element} />
+              ))
+              }
+            </Routes>
 
-        </Layout>
+          </Layout>
+        </FavoritesProvider>
       </BrowserRouter>
     </div>
   );
