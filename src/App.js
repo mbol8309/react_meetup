@@ -39,9 +39,7 @@ function App() {
 
           <Routes>
             {routes.map(r => (
-              <Fragment>
-                <Route key={r.path} path={r.path} element={r.element} />
-              </Fragment>
+              <Route key={r.path} path={r.path} element={r.element} />
             ))
             }
           </Routes>
