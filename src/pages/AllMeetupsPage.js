@@ -1,13 +1,12 @@
 import { useMemo } from "react";
 import MeetupItem from "../components/meetups/MeetupItem";
+import { useMeetups } from "../components/meetups/MeetupsProvider";
 import { useFetch } from "../util-hooks/useFetch";
 import classes from "./../components/meetups/MeetupList.module.css";
 
 
 export default function AllMeetupsPage() {
-  const { data } = useFetch({
-    url: "/data.json",
-  });
+  const { meetups: data } = useMeetups()
 
   const loading = useMemo(() => !data ? true : false,[data])
 

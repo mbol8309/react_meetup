@@ -10,6 +10,7 @@ import Layout from "./components/layout/Layout";
 import { BrowserRouter, createBrowserRouter, Route, Routes } from "react-router-dom";
 import FavoritesProvider from "./components/meetups/FavoritesProvider";
 import useMeetupRoutes from "./components/layout/useMeetupRoutes";
+import MeetupsProvider from "./components/meetups/MeetupsProvider";
 
 function App() {
   const routes = useMeetupRoutes()
@@ -17,19 +18,21 @@ function App() {
   return (
     <div data-test="app">
       <BrowserRouter>
-        <FavoritesProvider>
-          <MainNavigation />
-          <Layout>
+        <MeetupsProvider>
+          <FavoritesProvider>
+            <MainNavigation />
+            <Layout>
 
-            <Routes>
-              {routes.map(r => (
-                <Route key={r.path} path={r.path} element={r.element} />
-              ))
-              }
-            </Routes>
+              <Routes>
+                {routes.map(r => (
+                  <Route key={r.path} path={r.path} element={r.element} />
+                ))
+                }
+              </Routes>
 
-          </Layout>
-        </FavoritesProvider>
+            </Layout>
+          </FavoritesProvider>
+        </MeetupsProvider>
       </BrowserRouter>
     </div>
   );
